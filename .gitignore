@@ -1,0 +1,25 @@
+# Credentials and existing private key directory
+/key/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+wp-config.php
+
+# Local runtimes, websites, databases, downloads, logs and secrets
+/.local/
+/backups/
+*.sql
+*.sql.gz
+*.log
+
+# Optional build dependencies and editor/system files
+node_modules/
+vendor/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
