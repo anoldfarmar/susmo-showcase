@@ -2,6 +2,8 @@
 
 当前站点使用英文，展示假发产品和公司信息，不提供支付、订单或客户账户。已有环境无需重新安装。
 
+GitHub → EdgeOne Pages 发布流程现已补齐，见 [静态发布说明](edgeone-pages.md)。本机后台编辑后运行 `node scripts/Export-Static.mjs`，检查并提交 `dist/`；Pages 不运行本机 WordPress。静态预览命令为 `node scripts/Preview-Static.mjs`，访问 `http://127.0.0.1:8081/`。
+
 ## 访问
 
 - 首页：<http://127.0.0.1:8080/>
@@ -10,6 +12,7 @@
 - Hair Guide：<http://127.0.0.1:8080/hair-guide/>
 - FAQ：<http://127.0.0.1:8080/faq/>
 - Contact Us：<http://127.0.0.1:8080/contact/>
+- Privacy Policy：<http://127.0.0.1:8080/privacy/>
 - 管理后台：<http://127.0.0.1:8080/wp-admin/>
 
 管理员凭据仍在 `.local/site-access.json`，不粘贴到聊天。仅保留网站管理员登录，不开放客户注册。
@@ -21,6 +24,8 @@
 - 在 WooCommerce Products 中维护商品图片和描述；其交易功能已由 susmo Catalog 插件禁止。当前只发布一款有素材支持的假发，旧示例商品改为草稿。
 - 公司英文译名是 Shenzhen Dunlin E-Commerce Co., Ltd.，原始中文名称和中英地址对照保存在 `.plan.md`。没有确认的材质、帽围、尺寸和可选颜色通过邮箱沟通，不编造参数。
 - 首版首页由 `theme/front-page.php` 组织，公共导航/页脚和商品展示也在 `theme/`；全站 CSS 为 `theme/style.css`。
+- Privacy Policy 正文的来源文件是 `content/privacy-policy.html`，章节框架参照 oofos.com 的隐私政策（Scope、收集范围、用途、披露、聚合数据、Cookie 与追踪、选择权、儿童、安全、第三方链接、变更、联系方式、特定司法辖区），但全部内容按 susmo 实际做法重写。修改后运行 `dev.ps1 -Action Privacy` 写入 WordPress 页面；旧正文会备份到 `.local/backups/`。
+- 页脚 `theme/footer.php` 在“Our company”栏和底部版权行各放一个 Privacy Policy 链接，所有使用公共页脚的页面（含商品详情、搜索结果和 404）都能从页面底部进入隐私政策。
 
 `theme/` 与 `plugins/susmo-catalog/` 都通过 Junction 映射到本机运行目录，修改源码后刷新页面即可。不要修改 WordPress、父主题或 WooCommerce 源码，不需要 npm 构建。
 
@@ -52,9 +57,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File '.\scripts\dev.ps1' -Action 
 node '.\scripts\Check-Site.mjs'
 ```
 
-该检查验证英文页面、公开公司信息、客户表单和价格/购买入口缺失，测试旧交易 URL 和匿名写入被拒绝，并比较运行前后的数据库聚合计数。不会提交个人资料、创建购物车、客户或订单。结果在 `.local/catalog-verification.json`。
+该检查验证英文页面、公开公司信息、客户表单和价格/购买入口缺失，测试旧交易 URL 和匿名写入被拒绝，并比较运行前后的数据库聚合计数。检查列表已包含 `/privacy/`。不会提交个人资料、创建购物车、客户或订单。结果在 `.local/catalog-verification.json`。
 
 保留历史测试会话及默认评论，未执行删除。访客会话处理器不新建或持久化购物会话；旧记录不等于新增客户资料收集。
+
+2026-11-05 隐私政策改写后复核：Home、Wigs、About Us、Hair Guide、FAQ、Contact Us、Privacy、商品详情、搜索结果和 404 页面底部都返回 Privacy Policy 链接；目录与接口拒绝检查、数据库聚合计数检查同样通过。
 
 本次本机 HTTP、PHP 语法、接口拒绝和数据数量检查通过。Computer Use 未能可靠识别 Chrome 当前 URL，因此尚未完成浏览器截图、多尺寸布局和菜单/图库键盘交互实测；页面已加入相应响应式样式和交互代码。
 

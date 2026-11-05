@@ -56,8 +56,14 @@ add_filter('woocommerce_product_reviews_enabled', '__return_false');
 
 function susmo_catalog_unavailable() {
     nocache_headers();
-    wp_die('This website is a product catalog. Online transactions and customer accounts are unavailable.', 'Catalog only', array('response' => 410));
+    $message = '<p>This website is a product catalog. Online transactions and customer accounts are unavailable.</p>';
+    $message .= '<footer><a href="' . esc_url(home_url('/privacy/')) . '">Privacy Policy</a></footer>';
+    wp_die($message, 'Catalog only', array('response' => 410));
 }
+
+add_filter('admin_footer_text', function ($text) {
+    return $text . ' | <a href="' . esc_url(home_url('/privacy/')) . '">Privacy Policy</a>';
+});
 
 // Run before WooCommerce's init/wp_loaded form handlers and session creation.
 add_action('init', function () {

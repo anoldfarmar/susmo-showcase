@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
-    [ValidateSet('Setup', 'Start', 'Stop', 'Check', 'Site', 'Brand')]
+    [ValidateSet('Setup', 'Start', 'Stop', 'Check', 'Site', 'Brand', 'Privacy')]
     [string]$Action
 )
 
@@ -26,7 +26,9 @@ foreach ($candidate in ($candidates | Select-Object -Unique)) {
 if (-not $shellExe) {
     throw 'PowerShell 7.2+ was not found. See docs/local-setup.md; do not install other project dependencies yet.'
 }
-if ($Action -eq 'Brand') {
+if ($Action -eq 'Privacy') {
+    & $shellExe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Apply-Privacy.ps1')
+} elseif ($Action -eq 'Brand') {
     & $shellExe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Apply-Susmo.ps1')
 } elseif ($Action -eq 'Site') {
     & $shellExe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Setup-Site.ps1')

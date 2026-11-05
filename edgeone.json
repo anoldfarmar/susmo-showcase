@@ -1,0 +1,5 @@
+{
+  "installCommand": "node --version",
+  "buildCommand": "node scripts/Check-Static.mjs",
+  "outputDirectory": "dist"
+}
